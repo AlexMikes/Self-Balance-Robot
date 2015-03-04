@@ -1,7 +1,7 @@
 #define version_0.65
 
-#define DEBUGING
-#define BLUE
+//#define DEBUGING        //for Debug
+#define BLUE              //for bluetooth
 
 #include <I2Cdev.h>
 #include <Wire.h>
@@ -52,12 +52,12 @@ void dmpDataReady() {
 #define ROTATION_KI 300
 #define ROTATION_KD 4
 
-#define MOTOR_A_DIR       9         //M11
+#define MOTOR_A_DIR       5         //M11        //L293d pins
 #define MOTOR_A_BRAKE     8         //M12
-#define MOTOR_B_DIR       10         //M21
+#define MOTOR_B_DIR       6         //M21
 #define MOTOR_B_BRAKE     12         //M22
-#define MOTOR_A_PWM       5         //M1E
-#define MOTOR_B_PWM       6         //M2E
+#define MOTOR_A_PWM       9         //M1E
+#define MOTOR_B_PWM       10         //M2E
 
 // Motor Misc
 #define PWM_MIN 0
@@ -109,8 +109,8 @@ yoriginalSetpoint = ysetpoint;
 void loop() 
 {
  // set_point();
-  getvalues();
-  new_pid();
+  getvalues();      //get mpu values
+  new_pid();        //deploy pid
  // stable();
 
 #ifdef BLUE
