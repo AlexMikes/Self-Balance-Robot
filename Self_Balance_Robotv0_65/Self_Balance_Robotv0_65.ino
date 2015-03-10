@@ -108,14 +108,11 @@ yoriginalSetpoint = ysetpoint;
 
 void loop() 
 {
- // set_point();
   getvalues();      //get mpu values
   new_pid();        //deploy pid
- // stable();
 
 #ifdef BLUE
 Bt_control();
- //listen_bluetooth();
 #endif
 
 #ifdef DEBUGING
@@ -202,82 +199,6 @@ void printval()
   Serial.print(MotorAspeed); Serial.print("\t");
   Serial.print(MotorBspeed); Serial.println("\t");
 
-}
-
-void set_point()
-{
-   if(set)
-  {
-  while(millis()<25000)
-  {
-  getvalues();
-  #ifdef DEBUGING
-  printval();
-  #endif
-  }
-  setpoint=input;
-  originalSetpoint=setpoint;
-  set = false;
-  } 
-}
-
-void stable()
-{
-  if((millis()-timer)>=1000)
-  {
-    moveBackForth();
-    timer=millis();
-  }
-}
-
-void read_bluetooth()
-{
- if(blue.available())
- {
-  correct_pid();
-  //correct_motors();
- }
-}
-
-void listen_bluetooth()
-{
-   if((millis()-timer1)>=100)
-  {
-    read_bluetooth();
-  
-    timer1=millis();
-  }
-}
-
-void correct_pid()
-{
- for(int i = 0;i<3;i++)
-{
-  Buffer[i]=blue.parseFloat();
-} 
-if(Buffer[0]!= prevKp || Buffer[1]!=prevKi || Buffer[2]!=prevKd)
-{
-  rot.SetTunings(Buffer[0],Buffer[1],Buffer[2]);
- 
-  prevKp=Buffer[0];
-  prevKi=Buffer[1];
-  prevKd=Buffer[2];
-} 
-}
-
-void correct_motors()
-{
- for(int i = 0;i<2;i++)
-{
-  Buffer[i]=blue.parseFloat();
-} 
-if(Buffer[0]!= prevA || Buffer[1]!=prevB)
-{
- MOTORSLACK_A=Buffer[0];
- MOTORSLACK_B=Buffer[1];
-  prevA=Buffer[0];
-  prevB=Buffer[1];
-} 
 }
 
 void Bt_control()
